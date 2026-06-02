@@ -3,7 +3,7 @@ import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import ProductCard from "../components/ProductCard";
 import { getProducts } from "../services/productService";
-
+import toast from "react-hot-toast";
 
 function Menu() {
   const [products, setProducts] = useState([]);
@@ -12,7 +12,9 @@ function Menu() {
     try {
       const data = await getProducts();
       setProducts(data);
+      toast.success("Products fetched successfully");
     } catch (error) {
+      toast.error("Failed to fetch products");
       console.log(error);
     }
   };
