@@ -53,7 +53,7 @@
                   {/* Product */}
                   <div className="flex items-center gap-4">
 
-<img src={`http://localhost:5000${item.image}`} alt={item.title} className="w-20 h-20 object-cover rounded-lg border" onError={(e) => { e.target.src = "https://via.placeholder.com/100"; }} />
+<img src={`https://pizza-palace-backend-fj5l.onrender.com${item.image}`} alt={item.title} className="w-20 h-20 object-cover rounded-lg border" onError={(e) => { e.target.src = "https://via.placeholder.com/100"; }} />
 
                     <div>
                       <h2 className="text-lg md:text-xl font-semibold">
