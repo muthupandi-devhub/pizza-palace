@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API_URL = "http://localhost:5000/api/orders";
+const API_URL = "https://pizza-palace-backend-fj5l.onrender.com/api/orders";
 
 export const placeOrder = async (orderData) => {
   const token = localStorage.getItem("token");

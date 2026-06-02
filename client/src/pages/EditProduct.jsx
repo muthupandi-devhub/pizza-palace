@@ -19,7 +19,7 @@ function EditProduct() {
   const fetchProduct = async () => {
     try {
       const response = await axios.get(
-        `http://localhost:5000/api/products/${id}`
+        `https://pizza-palace-backend-fj5l.onrender.com/api/products/${id}`
       );
 
       const product = response.data;
@@ -40,7 +40,7 @@ function EditProduct() {
 
     try {
       await axios.put(
-        `http://localhost:5000/api/products/${id}`,
+        `https://pizza-palace-backend-fj5l.onrender.com/api/products/${id}`,
         {
           title,
           price,

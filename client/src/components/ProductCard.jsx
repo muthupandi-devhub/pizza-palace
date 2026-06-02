@@ -19,7 +19,7 @@ function ProductCard({ product }) {
     <div className="bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-2xl transition duration-300">
 
 <img
-  src={`http://localhost:5000${product.image}`}
+  src={`https://pizza-palace-backend-fj5l.onrender.com${product.image}`}
   alt={product.title}
   className="w-100 h-80 object-cover"
 />
