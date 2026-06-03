@@ -16,41 +16,62 @@ function ProductCard({ product }) {
   };
 
   return (
-    <div className="bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-2xl transition duration-300">
+    <div className="bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-2xl hover:-translate-y-2 transition duration-300">
 
-<img
-  src={`https://pizza-palace-backend-fj5l.onrender.com${product.image}`}
-  alt={product.title}
-  className="w-100 h-80 object-cover"
-/>
+      {/* Product Image */}
+      <img
+        src={`https://pizza-palace-backend-fj5l.onrender.com${product.image}`}
+        alt={product.title}
+        className="w-full h-80 object-cover"
+      />
 
       <div className="p-5">
 
-        <h2 className="text-2xl font-bold mb-2">
+        {/* Category Badge */}
+        <div className="mb-3">
+          <span
+            className={`inline-flex items-center gap-2 px-3 py-1 rounded-full text-sm font-semibold ${
+              product.category === "Veg"
+                ? "bg-green-100 text-green-700"
+                : "bg-red-100 text-red-700"
+            }`}
+          >
+            <span
+              className={`w-3 h-3 rounded-full ${
+                product.category === "Veg"
+                  ? "bg-green-600"
+                  : "bg-red-600"
+              }`}
+            ></span>
+
+            {product.category}
+          </span>
+        </div>
+
+        {/* Product Title */}
+        <h2 className="text-2xl font-bold mb-2 text-gray-800">
           {product.title}
         </h2>
 
-        <p className="text-red-600 font-bold text-lg mb-1">
+        {/* Price */}
+        <p className="text-red-600 font-bold text-xl mb-2">
           ₹{product.price}
         </p>
 
-        <p className="text-sm text-gray-500 mb-2">
-          {product.category}
-        </p>
-
-        <p className="text-gray-600 mb-4">
+        {/* Description */}
+        <p className="text-gray-600 mb-5 line-clamp-2">
           {product.description}
         </p>
 
+        {/* Button */}
         <button
           onClick={handleAddToCart}
-          className="w-full bg-red-700 text-white py-2 rounded-lg font-semibold hover:bg-red-800 transition"
+          className="w-full bg-gradient-to-r from-red-600 to-orange-500 text-white py-3 rounded-xl font-semibold hover:from-red-700 hover:to-orange-600 transition duration-300"
         >
           Add To Cart
         </button>
 
       </div>
-
     </div>
   );
 }
