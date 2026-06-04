@@ -5,7 +5,12 @@ import {
   getProducts,
   deleteProduct,
 } from "../services/productService";
-
+import {
+  FaPizzaSlice,
+  FaEdit,
+  FaTrash,
+  FaPlus,
+} from "react-icons/fa";
 function AdminProducts() {
   const navigate = useNavigate();
 
@@ -45,7 +50,7 @@ function AdminProducts() {
 
   return (
     <>
-    
+
 
       <div className="min-h-screen bg-orange-50 py-10 px-6">
 
@@ -58,7 +63,7 @@ function AdminProducts() {
 
               <div>
                 <h1 className="text-4xl font-bold text-red-600">
-                  🍕 Product Management
+                  Product Management
                 </h1>
 
                 <p className="text-gray-600 mt-2">
@@ -133,11 +138,11 @@ function AdminProducts() {
 
                         <td className="p-4">
 
-                          <img
-                            src={product.image}
-                            alt={product.title}
-                            className="w-20 h-20 object-cover rounded-xl border"
-                          />
+<img
+  src={`https://pizza-palace-backend-fj5l.onrender.com${product.image}`}
+  alt={product.title}
+  className="w-20 h-20 object-cover rounded-xl border"
+/>
 
                         </td>
 
@@ -210,7 +215,7 @@ function AdminProducts() {
 
       </div>
 
-    
+
     </>
   );
 }

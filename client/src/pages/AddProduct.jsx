@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { addProduct } from "../services/productService";
 import { useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
+import { FaPizzaSlice, FaImage } from "react-icons/fa";
 
 function AddProduct() {
   const navigate = useNavigate();
@@ -8,10 +10,10 @@ function AddProduct() {
   const [formData, setFormData] = useState({
     title: "",
     price: "",
-    image: "",
     category: "Veg",
     description: "",
   });
+
   const [image, setImage] = useState(null);
 
   const handleChange = (e) => {
@@ -21,49 +23,53 @@ function AddProduct() {
     });
   };
 
-const handleSubmit = async (e) => {
-  e.preventDefault();
+  const handleSubmit = async (e) => {
+    e.preventDefault();
 
-  const productData = new FormData();
+    if (!image) {
+      toast.error("Please select an image");
+      return;
+    }
 
-  productData.append("title", formData.title);
-  productData.append("price", formData.price);
-  productData.append("category", formData.category);
-  productData.append("description", formData.description);
-  productData.append("image", image);
+    const productData = new FormData();
 
-  try {
-    await addProduct(productData);
+    productData.append("title", formData.title);
+    productData.append("price", formData.price);
+    productData.append("category", formData.category);
+    productData.append("description", formData.description);
+    productData.append("image", image);
 
-    alert("Product Added Successfully");
-    navigate("/admin/products");
+    try {
+      await addProduct(productData);
 
-  } catch (error) {
-    console.log(error);
-  }
-};
+      toast.success("Product Added Successfully");
+
+      navigate("/admin/products");
+    } catch (error) {
+      console.log(error);
+      toast.error("Failed to Add Product");
+    }
+  };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-red-100 via-orange-50 to-yellow-100 flex items-center justify-center p-4">
-
       <div className="w-full max-w-2xl bg-white rounded-3xl shadow-2xl p-8">
 
         <div className="text-center mb-8">
+          <FaPizzaSlice className="mx-auto text-red-600 text-5xl mb-3" />
 
           <h1 className="text-4xl font-bold text-red-700">
-            🍕 Add New Pizza
+            Add New Pizza
           </h1>
 
           <p className="text-gray-500 mt-2">
             Create a new product for Pizza Palace
           </p>
-
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-5">
 
           <div>
-
             <label className="font-semibold block mb-2">
               Product Title
             </label>
@@ -73,15 +79,13 @@ const handleSubmit = async (e) => {
               name="title"
               value={formData.title}
               onChange={handleChange}
-              placeholder="Enter pizza name"
+              placeholder="Enter Pizza Name"
               className="w-full border-2 border-gray-200 p-3 rounded-xl focus:border-red-500 outline-none"
               required
             />
-
           </div>
 
           <div>
-
             <label className="font-semibold block mb-2">
               Price
             </label>
@@ -91,15 +95,13 @@ const handleSubmit = async (e) => {
               name="price"
               value={formData.price}
               onChange={handleChange}
-              placeholder="Enter price"
+              placeholder="Enter Price"
               className="w-full border-2 border-gray-200 p-3 rounded-xl focus:border-red-500 outline-none"
               required
             />
-
           </div>
 
           <div>
-
             <label className="font-semibold block mb-2">
               Category
             </label>
@@ -110,30 +112,35 @@ const handleSubmit = async (e) => {
               onChange={handleChange}
               className="w-full border-2 border-gray-200 p-3 rounded-xl focus:border-red-500 outline-none"
             >
-              <option value="Veg">Veg</option>
-              <option value="Non-Veg">Non-Veg</option>
+              <option value="Veg"> Veg</option>
+              <option value="Non-Veg"> Non-Veg</option>
             </select>
-
           </div>
 
           <div>
-
             <label className="font-semibold block mb-2">
-              Image URL
+              Product Image
             </label>
 
-       <input
-  type="file"
-  accept="image/*"
-  onChange={(e) =>
-    setImage(e.target.files[0])
-  }
-/>
+            <input
+              type="file"
+              accept="image/*"
+              onChange={(e) => setImage(e.target.files[0])}
+              className="w-full border-2 border-dashed border-gray-300 p-3 rounded-xl"
+            />
 
+            {image && (
+              <div className="mt-4">
+                <img
+                  src={URL.createObjectURL(image)}
+                  alt="Preview"
+                  className="w-40 h-40 object-cover rounded-xl border"
+                />
+              </div>
+            )}
           </div>
 
           <div>
-
             <label className="font-semibold block mb-2">
               Description
             </label>
@@ -143,11 +150,10 @@ const handleSubmit = async (e) => {
               name="description"
               value={formData.description}
               onChange={handleChange}
-              placeholder="Enter pizza description"
+              placeholder="Enter Pizza Description"
               className="w-full border-2 border-gray-200 p-3 rounded-xl focus:border-red-500 outline-none"
               required
-            ></textarea>
-
+            />
           </div>
 
           <button
@@ -158,9 +164,7 @@ const handleSubmit = async (e) => {
           </button>
 
         </form>
-
       </div>
-
     </div>
   );
 }

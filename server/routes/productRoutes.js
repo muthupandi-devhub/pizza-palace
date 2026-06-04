@@ -11,7 +11,7 @@ const {
   getProductById,
 } = require("../controllers/productController");
 
-// Add Product with Image Upload
+// Add Product
 router.post(
   "/",
   upload.single("image"),
@@ -25,7 +25,11 @@ router.get("/", getProducts);
 router.get("/:id", getProductById);
 
 // Update Product
-router.put("/:id", updateProduct);
+router.put(
+  "/:id",
+  upload.single("image"),
+  updateProduct
+);
 
 // Delete Product
 router.delete("/:id", deleteProduct);
