@@ -1,5 +1,6 @@
 import React, { useContext } from "react";
 import { CartContext } from "../context/CartContext";
+import toast from "react-hot-toast";
 
 function ProductCard({ product }) {
   const { addToCart } = useContext(CartContext);
@@ -8,7 +9,7 @@ function ProductCard({ product }) {
 
   const handleAddToCart = () => {
     if (!token) {
-      alert("Please Login First");
+      toast.error("Please Login First");
       return;
     }
 

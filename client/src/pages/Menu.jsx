@@ -3,17 +3,16 @@ import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import ProductCard from "../components/ProductCard";
 import { getProducts } from "../services/productService";
-import toast from "react-hot-toast";
 
 function Menu() {
   const [products, setProducts] = useState([]);
+  const [selectedCategory, setSelectedCategory] = useState("All");
 
   const fetchProducts = async () => {
     try {
       const data = await getProducts();
       setProducts(data);
     } catch (error) {
-
       console.log(error);
     }
   };
@@ -22,13 +21,12 @@ function Menu() {
     fetchProducts();
   }, []);
 
-  const vegProducts = products.filter(
-    (product) => product.category === "Veg"
-  );
-
-  const nonVegProducts = products.filter(
-    (product) => product.category === "Non-Veg"
-  );
+  const filteredProducts =
+    selectedCategory === "All"
+      ? products
+      : products.filter(
+          (product) => product.category === selectedCategory
+        );
 
   return (
     <>
@@ -38,61 +36,98 @@ function Menu() {
 
         <div className="max-w-7xl mx-auto">
 
-          <h1 className="text-4xl md:text-5xl font-bold text-center mb-12">
-             Our Menu
-          </h1>
+          {/* Page Heading */}
 
-          {/* Veg Section */}
-          <div className="mb-16">
+          <div className="text-center mb-12">
 
-            <h2 className="text-3xl font-bold text-green-600 mb-8 border-b-4 border-green-500 inline-block pb-2">
-               Veg Pizzas
-            </h2>
+            <h1 className="text-5xl font-bold text-gray-900 mb-4">
+              Our Menu
+            </h1>
 
-            {vegProducts.length > 0 ? (
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-
-                {vegProducts.map((product) => (
-                  <ProductCard
-                    key={product._id}
-                    product={product}
-                  />
-                ))}
-
-              </div>
-            ) : (
-              <p className="text-gray-500">
-                No Veg Pizzas Available
-              </p>
-            )}
+            <p className="text-gray-500 text-lg">
+              Discover our freshly baked pizzas made with premium ingredients
+            </p>
 
           </div>
 
-          {/* Non Veg Section */}
-          <div>
+          {/* Category Buttons */}
 
-            <h2 className="text-3xl font-bold text-red-600 mb-8 border-b-4 border-red-500 inline-block pb-2">
+          <div className="flex flex-wrap justify-center gap-4 mb-12">
+
+            <button
+              onClick={() => setSelectedCategory("All")}
+              className={`px-6 py-3 rounded-full font-semibold transition-all duration-300
+              ${
+                selectedCategory === "All"
+                  ? "bg-black text-white shadow-lg scale-105"
+                  : "bg-white text-gray-700 border hover:bg-gray-100"
+              }`}
+            >
+              All Pizzas
+            </button>
+
+            <button
+              onClick={() => setSelectedCategory("Veg")}
+              className={`px-6 py-3 rounded-full font-semibold transition-all duration-300
+              ${
+                selectedCategory === "Veg"
+                  ? "bg-green-600 text-white shadow-lg scale-105"
+                  : "bg-white text-gray-700 border hover:bg-green-50"
+              }`}
+            >
+              Veg Pizzas
+            </button>
+
+            <button
+              onClick={() => setSelectedCategory("Non-Veg")}
+              className={`px-6 py-3 rounded-full font-semibold transition-all duration-300
+              ${
+                selectedCategory === "Non-Veg"
+                  ? "bg-red-600 text-white shadow-lg scale-105"
+                  : "bg-white text-gray-700 border hover:bg-red-50"
+              }`}
+            >
               Non-Veg Pizzas
-            </h2>
-
-            {nonVegProducts.length > 0 ? (
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-
-                {nonVegProducts.map((product) => (
-                  <ProductCard
-                    key={product._id}
-                    product={product}
-                  />
-                ))}
-
-              </div>
-            ) : (
-              <p className="text-gray-500">
-                No Non-Veg Pizzas Available
-              </p>
-            )}
+            </button>
 
           </div>
+
+          {/* Product Count */}
+
+          <div className="text-center mb-8">
+
+            <p className="text-gray-600 text-lg">
+              Showing {filteredProducts.length} Pizza(s)
+            </p>
+
+          </div>
+
+          {/* Product Grid */}
+
+          {filteredProducts.length > 0 ? (
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+
+              {filteredProducts.map((product) => (
+                <ProductCard
+                  key={product._id}
+                  product={product}
+                />
+              ))}
+
+            </div>
+
+          ) : (
+
+            <div className="text-center py-20">
+
+              <h2 className="text-2xl font-semibold text-gray-500">
+                No Products Found
+              </h2>
+
+            </div>
+
+          )}
 
         </div>
 
@@ -104,3 +139,4 @@ function Menu() {
 }
 
 export default Menu;
+
