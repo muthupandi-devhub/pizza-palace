@@ -19,11 +19,14 @@ function ProductCard({ product }) {
     <div className="bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-2xl hover:-translate-y-2 transition duration-300">
 
       {/* Product Image */}
-      <img
-        src={`https://pizza-palace-backend-fj5l.onrender.com${product.image}`}
-        alt={product.title}
-        className="w-full h-80 object-cover"
-      />
+    <img
+  src={product.image}
+  alt={product.title}
+  className="w-full h-80 object-cover"
+  onError={(e) => {
+    e.target.src = "/placeholder.png";
+  }}
+/>
 
       <div className="p-5">
 

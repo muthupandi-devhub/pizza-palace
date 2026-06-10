@@ -137,11 +137,13 @@ function AdminProducts() {
                       >
 
                         <td className="p-4">
-
 <img
-  src={`https://pizza-palace-backend-fj5l.onrender.com${product.image}`}
+  src={product.image}
   alt={product.title}
   className="w-20 h-20 object-cover rounded-xl border"
+  onError={(e) => {
+    e.target.src = "https://via.placeholder.com/80";
+  }}
 />
 
                         </td>
