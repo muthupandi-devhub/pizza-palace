@@ -1,59 +1,63 @@
-import { useEffect, useState } from "react";
+  import { useEffect, useState } from "react";
+  import {
+    getAllOrders,
+    updateOrderStatus,
+  } from "../services/orderService";
 
-import {
-  getAllOrders,
-  updateOrderStatus,
-} from "../services/orderService";
+  import toast from "react-hot-toast";
 
-import {
-  FaClipboardList,
-  FaUser,
-  FaMoneyBillWave,
-} from "react-icons/fa";
+  import {
+    FaClipboardList,
+    FaUser,
+    FaMoneyBillWave,
+    FaMapMarkerAlt,
+    FaPhone,
+    FaCalendarAlt,
+  } from "react-icons/fa";
 
-function AdminOrders() {
-  const [orders, setOrders] = useState([]);
+  function AdminOrders() {
+    const [orders, setOrders] = useState([]);
 
-  useEffect(() => {
-    fetchOrders();
-  }, []);
-
-  const fetchOrders = async () => {
-    try {
-      const data = await getAllOrders();
-      setOrders(data);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  const handleStatusChange = async (
-    orderId,
-    status
-  ) => {
-    try {
-      await updateOrderStatus(orderId, status);
-
+    useEffect(() => {
       fetchOrders();
+    }, []);
 
-      toast.success("Order Status Updated");
-    } catch (error) {
-      console.log(error);
-    }
-  };
+const fetchOrders = async () => {
+  try {
+    const data = await getAllOrders();
 
-  return (
-    <>
-  
+    console.log("ALL ORDERS :", data);
 
+    setOrders(data);
+
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+    const handleStatusChange = async (
+      orderId,
+      status
+    ) => {
+      try {
+        await updateOrderStatus(orderId, status);
+
+        fetchOrders();
+
+        toast.success("Order Status Updated");
+      } catch (error) {
+        console.log(error);
+        toast.error("Failed To Update Status");
+      }
+    };
+
+    return (
       <div className="min-h-screen bg-gray-100 py-10 px-4">
-
         <div className="max-w-7xl mx-auto">
 
           {/* Header */}
 
           <div className="flex items-center gap-4 mb-8">
-
             <div className="w-16 h-16 bg-red-100 rounded-xl flex items-center justify-center">
               <FaClipboardList
                 size={30}
@@ -66,187 +70,186 @@ function AdminOrders() {
                 Order Management
               </h1>
 
-              <p className="text-gray-600 mt-1">
+              <p className="text-gray-600">
                 Manage customer orders and delivery status
               </p>
             </div>
-
           </div>
 
-          {/* Table */}
+          {/* Orders */}
 
-          <div className="bg-white rounded-2xl shadow-xl overflow-hidden">
+          <div className="space-y-6">
 
-            <div className="bg-red-600 text-white px-6 py-4">
-              <h2 className="text-xl font-semibold">
-                All Orders
-              </h2>
-            </div>
+            {orders.length > 0 ? (
 
-            <div className="overflow-x-auto">
+              orders.map((order) => (
 
-              <table className="w-full">
+                <div
+                  key={order._id}
+                  className="bg-white rounded-2xl shadow-lg p-6"
+                >
 
-                <thead>
+                  {/* Top */}
 
-                  <tr className="bg-gray-100">
+                  <div className="flex flex-col lg:flex-row justify-between gap-6">
 
-                    <th className="p-4 text-left">
-                      Customer
-                    </th>
+                    {/* Customer Details */}
 
-                    <th className="p-4 text-left">
-                      Products
-                    </th>
+                    <div className="flex-1">
 
-                    <th className="p-4 text-center">
-                      Total
-                    </th>
+                      <h2 className="text-xl font-bold mb-4 text-red-600">
+                        Customer Details
+                      </h2>
 
-                    <th className="p-4 text-center">
-                      Status
-                    </th>
+                      <div className="space-y-2">
 
-                  </tr>
+                        <p className="flex items-center gap-2">
+                          <FaUser className="text-blue-500" />
+                          <span>
+                            {order.deliveryAddress?.fullName ||
+                              order.user?.username}
+                          </span>
+                        </p>
 
-                </thead>
+                        <p className="flex items-center gap-2">
+                          <FaPhone className="text-green-500" />
+                          <span>
+                            {order.deliveryAddress?.phone}
+                          </span>
+                        </p>
 
-                <tbody>
+                        <p className="flex items-start gap-2">
+                          <FaMapMarkerAlt className="text-red-500 mt-1" />
+                          <span>
+                            {order.deliveryAddress?.addressLine},
+                            {" "}
+                            {order.deliveryAddress?.city},
+                            {" "}
+                            {order.deliveryAddress?.state}
+                            {" - "}
+                            {order.deliveryAddress?.pincode}
+                          </span>
+                        </p>
 
-                  {orders.length > 0 ? (
+                        <p className="flex items-center gap-2">
+                          <FaCalendarAlt className="text-purple-500" />
+                          <span>
+                            {new Date(
+                              order.createdAt
+                            ).toLocaleString()}
+                          </span>
+                        </p>
 
-                    orders.map((order) => (
+                      </div>
 
-                      <tr
-                        key={order._id}
-                        className="border-b hover:bg-gray-50"
-                      >
+                    </div>
 
-                        {/* Customer */}
+                    {/* Order Total */}
 
-                        <td className="p-4">
+                    <div className="text-center lg:text-right">
 
-                          <div className="flex items-center gap-2">
+                      <h2 className="text-xl font-bold mb-3">
+                        Order Total
+                      </h2>
 
-                            <FaUser className="text-blue-500" />
+                      <div className="flex items-center justify-center lg:justify-end gap-2 text-green-600 text-2xl font-bold">
+                        <FaMoneyBillWave />
+                        ₹{order.totalPrice}
+                      </div>
+
+                    </div>
+
+                  </div>
+
+                  {/* Products */}
+
+                  <div className="mt-6">
+
+                    <h2 className="text-xl font-bold mb-4">
+                      Ordered Products
+                    </h2>
+
+                    <div className="grid md:grid-cols-2 gap-3">
+
+                      {order.products.map(
+                        (item, index) => (
+
+                          <div
+                            key={index}
+                            className="bg-orange-50 border rounded-xl p-3 flex justify-between"
+                          >
 
                             <span className="font-medium">
-                              {order.user?.username}
+                              {item.product?.title}
+                            </span>
+
+                            <span className="text-red-600 font-semibold">
+                              × {item.quantity}
                             </span>
 
                           </div>
 
-                        </td>
+                        )
+                      )}
 
-                        {/* Products */}
+                    </div>
 
-                        <td className="p-4">
+                  </div>
 
-                          {order.products.map(
-                            (item, index) => (
+                  {/* Status */}
 
-                              <div
-                                key={index}
-                                className="bg-orange-50 rounded-lg px-3 py-2 mb-2"
-                              >
+                  <div className="mt-6 flex flex-col md:flex-row md:items-center gap-3">
 
-                                <span className="font-medium">
-                                  {item.product?.title}
-                                </span>
+                    <label className="font-semibold">
+                      Order Status:
+                    </label>
 
-                                <span className="text-red-600 ml-2">
-                                  × {item.quantity}
-                                </span>
+                    <select
+                      value={order.status}
+                      onChange={(e) =>
+                        handleStatusChange(
+                          order._id,
+                          e.target.value
+                        )
+                      }
+                      className="border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-red-500"
+                    >
+                      <option value="Pending">
+                        Pending
+                      </option>
 
-                              </div>
+                      <option value="Preparing">
+                        Preparing
+                      </option>
 
-                            )
-                          )}
+                      <option value="Out For Delivery">
+                        Out For Delivery
+                      </option>
 
-                        </td>
+                      <option value="Delivered">
+                        Delivered
+                      </option>
+                    </select>
 
-                        {/* Total */}
+                  </div>
 
-                        <td className="p-4 text-center">
+                </div>
 
-                          <div className="flex items-center justify-center gap-2 font-bold text-green-600">
+              ))
 
-                            <FaMoneyBillWave />
+            ) : (
 
-                            ₹{order.totalPrice}
+              <div className="bg-white rounded-xl p-10 text-center text-gray-500">
+                No Orders Found
+              </div>
 
-                          </div>
-
-                        </td>
-
-                        {/* Status */}
-
-                        <td className="p-4 text-center">
-
-                          <select
-                            value={order.status}
-                            onChange={(e) =>
-                              handleStatusChange(
-                                order._id,
-                                e.target.value
-                              )
-                            }
-                            className="border border-gray-300 rounded-lg px-3 py-2 font-medium focus:outline-none focus:ring-2 focus:ring-red-500"
-                          >
-                            <option value="Pending">
-                              Pending
-                            </option>
-
-                            <option value="Preparing">
-                              Preparing
-                            </option>
-
-                            <option value="Out For Delivery">
-                              Out For Delivery
-                            </option>
-
-                            <option value="Delivered">
-                              Delivered
-                            </option>
-
-                          </select>
-
-                        </td>
-
-                      </tr>
-
-                    ))
-
-                  ) : (
-
-                    <tr>
-
-                      <td
-                        colSpan="4"
-                        className="text-center p-10 text-gray-500"
-                      >
-                        No Orders Found
-                      </td>
-
-                    </tr>
-
-                  )}
-
-                </tbody>
-
-              </table>
-
-            </div>
+            )}
 
           </div>
 
         </div>
-
       </div>
+    );
+  }
 
-
-    </>
-  );
-}
-
-export default AdminOrders;
+  export default AdminOrders;

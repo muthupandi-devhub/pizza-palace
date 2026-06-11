@@ -1,48 +1,68 @@
 const Order = require("../models/Order");
 
+// Place Order
 const placeOrder = async (req, res) => {
-    try{
-        const { products, totalPrice } = req.body;
-        const order = new Order({
-            user: req.user.id,
-            products,
-            totalPrice
-        });
-        await order.save();
-        res.status(201).json({
-            message: "Order Placed Successfully",
-            order
-        });
-    } catch (error) {
-        res.status(500).json({ message: error.message });
-    }
-}
-const getMyOrders = async (req, res) => {
+  try {
 
-    try {
+    const {
+      products,
+      totalPrice,
+      paymentId,
+      deliveryAddress
+    } = req.body;
 
-        const orders = await Order.find({
-            user: req.user.id
-        }).populate("products.product");
+    const order = new Order({
+      user: req.user.id,
+      products,
+      totalPrice,
+      paymentId,
+      deliveryAddress
+    });
 
-        res.status(200).json(orders);
+    await order.save();
 
-    } catch (error) {
+    res.status(201).json({
+      message: "Order Placed Successfully",
+      order
+    });
 
-        res.status(500).json({
-            message: error.message
-        });
+  } catch (error) {
 
-    }
+    res.status(500).json({
+      message: error.message
+    });
 
+  }
 };
 
+// Get My Orders
+const getMyOrders = async (req, res) => {
+  try {
+
+    const orders = await Order.find({
+      user: req.user.id
+    }).populate("products.product");
+
+    res.status(200).json(orders);
+
+  } catch (error) {
+
+    res.status(500).json({
+      message: error.message
+    });
+
+  }
+};
+
+// Get All Orders (Admin)
 const getAllOrders = async (req, res) => {
   try {
 
     const orders = await Order.find()
       .populate("user", "username email")
       .populate("products.product");
+
+    console.log(orders);
 
     res.status(200).json(orders);
 
@@ -53,6 +73,7 @@ const getAllOrders = async (req, res) => {
   }
 };
 
+// Update Order Status
 const updateOrderStatus = async (req, res) => {
   try {
 
@@ -84,4 +105,35 @@ const updateOrderStatus = async (req, res) => {
   }
 };
 
-module.exports = {placeOrder, getMyOrders, getAllOrders, updateOrderStatus};
+const cancelOrder = async (req, res) => {
+  try {
+
+    const order = await Order.findById(req.params.id);
+
+    if (!order) {
+      return res.status(404).json({
+        message: "Order not found"
+      });
+    }
+
+    await Order.findByIdAndDelete(req.params.id);
+
+    res.status(200).json({
+      message: "Order Deleted Successfully"
+    });
+
+  } catch (error) {
+
+    res.status(500).json({
+      message: error.message
+    });
+
+  }
+};
+module.exports = {
+  placeOrder,
+  getMyOrders,
+  getAllOrders,
+  updateOrderStatus,
+  cancelOrder
+};

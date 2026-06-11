@@ -45,19 +45,20 @@ function Cart() {
               >
                 {/* Product */}
                 <div className="flex items-center gap-4">
-                  <img
-                    src={
-                      item.image
-                        ? `${API_URL}${item.image}`
-                        : "https://via.placeholder.com/100"
-                    }
-                    alt={item.title}
-                    className="w-20 h-20 object-cover rounded-lg border"
-                    onError={(e) => {
-                      e.target.src =
-                        "https://via.placeholder.com/100";
-                    }}
-                  />
+                 <img
+  src={
+    item.image
+      ? item.image.startsWith("http")
+        ? item.image
+        : `${API_URL}${item.image}`
+      : "https://via.placeholder.com/100"
+  }
+  alt={item.title}
+  className="w-20 h-20 object-cover rounded-lg border"
+  onError={(e) => {
+    e.target.src = "https://via.placeholder.com/100";
+  }}
+/>
 
                   <div>
                     <h2 className="text-lg md:text-xl font-semibold">
