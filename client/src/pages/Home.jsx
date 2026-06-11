@@ -3,6 +3,7 @@ import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import { getProducts } from "../services/productService";
 import ProductCard from "../components/ProductCard";
+import { Link } from "react-router-dom";
 
 import AOS from "aos";
 import "aos/dist/aos.css";
@@ -106,30 +107,46 @@ return (
 
   {/* Featured Products */}
 
-  <section className="max-w-7xl mx-auto py-16 px-4">
+ {/* Featured Products */}
 
-    <h2
-      data-aos="fade-up"
-      className="text-4xl font-bold text-center mb-12"
-    >
-      Featured Pizzas
-    </h2>
+<section className="max-w-7xl mx-auto py-16 px-4">
 
-    <div
-      data-aos="fade-up"
-      className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8"
-    >
+  <h2
+    data-aos="fade-up"
+    className="text-4xl font-bold text-center mb-12"
+  >
+    Featured Pizzas
+  </h2>
 
-      {products.map((product) => (
-        <ProductCard
-          key={product._id}
-          product={product}
-        />
-      ))}
+  <div
+    data-aos="fade-up"
+    className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8"
+  >
 
-    </div>
+    {products.slice(0, 6).map((product) => (
+      <ProductCard
+        key={product._id}
+        product={product}
+      />
+    ))}
 
-  </section>
+  </div>
+
+  <div className="text-center mt-12">
+
+    <Link to="/menu">
+
+      <button className="bg-red-600 hover:bg-red-700 text-white px-10 py-3 rounded-full font-semibold shadow-lg hover:shadow-2xl hover:scale-105 transition-all duration-300">
+
+        View Full Menu
+
+      </button>
+
+    </Link>
+
+  </div>
+
+</section>
 
   {/* Why Choose Us */}
 
