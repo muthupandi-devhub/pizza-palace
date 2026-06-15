@@ -4,7 +4,7 @@ import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import { FaTrash } from "react-icons/fa";
 import { Link } from "react-router-dom";
-import cartImage from "../assets/icons/cart.gif";
+import cartImage from "../assets/icons/carts.gif";
 
 function Cart() {
   const {
