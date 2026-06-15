@@ -50,9 +50,31 @@
       return (
         <>
           <Navbar />
-          <div className="text-center py-20 text-xl">
-            Loading Orders...
-          </div>
+          <div className="text-center py-20 flex flex-col items-center">
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    className="w-20 h-20 text-gray-400 mb-4 animate-bounce"
+    fill="none"
+    viewBox="0 0 24 24"
+    stroke="currentColor"
+    strokeWidth={1.5}
+  >
+    <path
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      d="M21 8.25v7.5a2.25 2.25 0 01-1.133 1.955l-6.75 3.857a2.25 2.25 0 01-2.234 0l-6.75-3.857A2.25 2.25 0 013 15.75v-7.5A2.25 2.25 0 014.133 6.295l6.75-3.857a2.25 2.25 0 012.234 0l6.75 3.857A2.25 2.25 0 0121 8.25z"
+    />
+    <path
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      d="M3.5 7.5L12 12.75 20.5 7.5M12 12.75v8.25"
+    />
+  </svg>
+
+  <h2 className="text-xl text-gray-600">
+    Loading Orders...
+  </h2>
+</div>
           <Footer />
         </>
       );

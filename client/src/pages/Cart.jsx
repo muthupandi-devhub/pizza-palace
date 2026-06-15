@@ -31,11 +31,26 @@ function Cart() {
         </h1>
 
         {cartItems.length === 0 ? (
-          <div className="text-center py-20">
-            <h2 className="text-xl text-gray-600">
-              Your cart is empty
-            </h2>
-          </div>
+<div className="text-center py-20 flex flex-col items-center">
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    className="w-30 h-30 text-gray-600 mb-4"
+    fill="none"
+    viewBox="0 0 24 24"
+    stroke="currentColor"
+    strokeWidth={1.5}
+  >
+    <path
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      d="M2.25 3h1.386c.51 0 .955.343 1.087.837L5.61 7.5m0 0h13.514c.77 0 1.429.55 1.554 1.31l.798 4.79a1.575 1.575 0 01-1.554 1.83H7.125a1.575 1.575 0 01-1.554-1.31L4.11 5.25M5.61 7.5l-.89-3.663M9 20.25a.75.75 0 100-1.5.75.75 0 000 1.5zm9 0a.75.75 0 100-1.5.75.75 0 000 1.5z"
+    />
+  </svg>
+
+  <h2 className="text-xl text-gray-600">
+    Your cart is empty...
+  </h2>
+</div>
         ) : (
           <>
             {cartItems.map((item) => (
