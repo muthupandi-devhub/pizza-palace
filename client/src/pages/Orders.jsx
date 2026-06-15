@@ -7,6 +7,7 @@
   } from "../services/orderService";
 
   import toast from "react-hot-toast";
+  import orderImage from "../assets/icons/order.gif";
 
   function Orders() {
     const [orders, setOrders] = useState([]);
@@ -89,10 +90,13 @@
           <h1 className="text-3xl font-bold mb-6">
             My Orders
           </h1>
-
+         
           {orders.length === 0 ? (
             <div className="bg-white p-6 rounded-lg shadow">
-              No Orders Found
+              <img src={orderImage} alt="No orders found" className="w-60 h-50 mx-auto" />
+              <p className="text-gray-500 text-center mt-4">
+                No orders found...
+              </p>
             </div>
           ) : (
             orders.map((order) => (
